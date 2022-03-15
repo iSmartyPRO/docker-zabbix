@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+
+  zabbix-server:
+      image: zabbix/zabbix-server-mysql:latest
+      container_name: ${DOCKER_CONTAINER_NAME}
+      restart: unless-stopped
+      environment:
+        DB_SERVER_HOST: ${DB_SERVER_HOST}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+        ZBX_HOSTNAME: ${ZBX_HOSTNAME}
+        ZBX_CACHESIZE: "128M"
+        ZBX_VALUECACHESIZE: "128M"
+
+
+  zabbix-front:
+      container_name: ${FRONT_DOCKER_CONTAINER_NAME}
+      image: zabbix/zabbix-web-nginx-mysql:latest
+      restart: unless-stopped
+      environment:
+        DB_SERVER_HOST: ${DB_SERVER_HOST}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+        ZBX_HOSTNAME: ${ZBX_HOSTNAME}
+        PHP_TZ: ${PHP_TZ}
+      ports:
+        - ${FRONT_ZABBIX_PORT}:8080
+
+
+  zabbix-agent:
+    container_name: ${AGENT_DOCKER_CONTAINER_NAME}
+    image: zabbix/zabbix-agent:latest
+    restart: unless-stopped
+    environment:
+      ZBX_HOSTNAME: ${ZBX_HOSTNAME}
+      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+    ports:
+        - 10050:10050
