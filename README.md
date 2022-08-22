@@ -8,6 +8,16 @@
 
 # Как пользоваться
 
+## Создание базы
+```
+mysql -uroot -pPassword -h 192.168.0.100
+CREATE DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin;
+CREATE USER 'zabbix'@'%' IDENTIFIED BY 'some_password';
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'%';
+FLUSH PRIVILEGES;
+```
+
+
 ## Установка
 ```
 docker-compose up -d
