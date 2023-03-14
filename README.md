@@ -70,10 +70,32 @@ docker-compose down
 
 ## Пользователь по умолчанию
 
-Логин: admin
+Логин: Admin
 Пароль: zabbix
 
 Рекомендуется сразу же сменить пароль.
+
+# Установка Zabbix Agent
+
+## На windows можно установить Zabbix Agent через Chocolatey
+```
+cinst zabbix-agent -y
+```
+редактирование конфигурации после установки через Chocolatey
+```
+code C:\ProgramData\zabbix\zabbix_agentd.conf
+```
+после обновления конфигурации перезагружаем службу:
+```
+Restart-Service "Zabbix Agent"
+```
+
+# Открытие порта для Zabbix Agent
+## На Windows через PowerShell
+```
+New-NetFirewallRule -DisplayName "Allow Zabbix Agent 10050/tcp" -Direction inbound -Profile Any -Action Allow -LocalPort 10050 -Protocol TCP
+```
+
 
 ## Дополнение
 После установки, необходимо изменить конфигурацию для Zabbix-server - необходимо вместо IP 127.0.0.1 указать DNS Zabbix-server, после чего будет корректно собираться данные Zabbix сервера.
